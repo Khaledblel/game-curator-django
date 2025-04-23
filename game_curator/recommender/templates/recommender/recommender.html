@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Game Recommender</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      min-height: 100vh;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 1rem;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body class="text-white px-4 py-12 flex flex-col items-center justify-center">
+  
+  <div class="glass p-10 max-w-3xl w-full">
+    <h1 class="text-4xl font-bold text-center mb-6 tracking-wide">🎮 AI Game Recommender</h1>
+    <p class="text-center text-gray-300 mb-8">Describe the type of game you want, and let AI work its magic.</p>
+
+    <form id="gameForm" class="flex flex-col gap-4">
+      <input
+        type="text"
+        name="prompt"
+        id="prompt"
+        placeholder="e.g., An open-world RPG with dragons and deep lore..."
+        class="p-4 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+      />
+      <button
+        type="submit"
+        class="bg-purple-600 hover:bg-purple-700 transition px-6 py-3 rounded text-white font-semibold text-lg"
+      >
+        Get Recommendations
+      </button>
+    </form>
+
+    <div id="results" class="mt-10 hidden">
+      <h2 class="text-2xl font-semibold mb-4">Recommended Games</h2>
+      <div id="gameCards" class="grid gap-6 sm:grid-cols-1 md:grid-cols-2"></div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('gameForm');
+    const resultsDiv = document.getElementById('results');
+    const gameCards = document.getElementById('gameCards');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const prompt = document.getElementById('prompt').value;
+      resultsDiv.classList.remove('hidden');
+      gameCards.innerHTML = ''; // Clear old results
+
+      // Simulate game cards (placeholder for IGDB results)
+      const games = [
+        { name: "Elden Ring", summary: "An epic dark fantasy RPG with a massive open world." },
+        { name: "The Witcher 3", summary: "A narrative-driven RPG with rich lore and dragons." }
+      ];
+
+      games.forEach(game => {
+        const card = document.createElement('div');
+        card.className = "p-4 bg-gray-800 rounded shadow-lg transition hover:scale-105 duration-200";
+        card.innerHTML = `
+          <h3 class="text-xl font-bold mb-2">${game.name}</h3>
+          <p class="text-gray-300">${game.summary}</p>
+        `;
+        gameCards.appendChild(card);
+      });
+    });
+  </script>
+</body>
+</html>

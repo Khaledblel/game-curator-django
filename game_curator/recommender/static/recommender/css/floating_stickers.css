@@ -1,0 +1,93 @@
+.sticker-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1; /* Default to behind content */
+}
+
+/* Special case for CTA section stickers to appear above the gradient background */
+#cta-sticker-container {
+  z-index: 1;
+}
+
+.sticker {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  animation: float 15s infinite ease-in-out;
+  opacity: 0.75;
+  filter: blur(2px); /* Added blur effect */
+}
+
+/* Section content needs higher z-index to appear above stickers */
+.section-content {
+  position: relative;
+  z-index: 10; /* Higher than stickers to ensure content visibility */
+  background: transparent;
+}
+
+@keyframes float {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(10px, 15px) rotate(5deg);
+  }
+  50% {
+    transform: translate(5px, 25px) rotate(0deg);
+  }
+  75% {
+    transform: translate(-10px, 15px) rotate(-5deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+/* Add animation delay for different stickers */
+.sticker:nth-child(2n) {
+  animation-delay: 2s;
+}
+.sticker:nth-child(3n) {
+  animation-delay: 4s;
+  animation-duration: 17s;
+}
+.sticker:nth-child(5n) {
+  animation-delay: 6s;
+  animation-duration: 20s;
+}
+.sticker:nth-child(7n) {
+  animation-delay: 8s;
+  animation-duration: 18s;
+}
+
+/* Nitro Style Card Effect */
+.nitro-card {
+  background-image: linear-gradient(163deg, #9333ea 0%, #3b82f6 100%);
+  border-radius: 20px;
+  transition: all 0.25s cubic-bezier(0, 0, 0, 1);
+  padding: 2px; /* Creates space for the gradient border */
+}
+
+.nitro-card:hover {
+  box-shadow: 0px 0px 30px 1px rgba(147, 51, 234, 0.3);
+  transform: scale(1.03);
+}
+
+.nitro-card-inner {
+  background-color: #1f2937; /* Dark background matching site theme */
+  border-radius: 18px;
+  transition: all 0.25s cubic-bezier(0, 0, 0, 1);
+  height: 100%;
+  cursor: pointer;
+}
+
+.nitro-card:hover .nitro-card-inner {
+  transform: scale(0.98);
+  border-radius: 16px;
+}
