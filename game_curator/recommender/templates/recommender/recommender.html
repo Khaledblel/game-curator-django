@@ -72,7 +72,7 @@
     }
     
     .rating-circle {
-      width: 3.5rem;
+        width: 3.5rem;
       height: 3.5rem;
       border-radius: 50%;
       display: flex;
@@ -337,11 +337,11 @@
           <div class="game-card p-6 bg-gray-800 rounded-lg shadow-lg">
             <div class="flex flex-col lg:flex-row gap-8">
               <!-- Cover Image Column -->
-              <div class="flex-shrink-0 lg:w-1/4">
-                ${coverImage}
-                <div class="mt-4 flex justify-center">
-                  <div class="rating-circle ${ratingColor}">
-                    <span class="text-xl font-bold">${rating}</span>
+              <div class="flex-shrink-0 lg:w-1/4 min-w-[220px]">
+                <div class="relative">
+                  ${coverImage}
+                  <div class="absolute top-2 right-2 rating-circle ${ratingColor} w-10 h-10">
+                    <span class="text-sm font-bold">${rating}</span>
                   </div>
                 </div>
                 <div class="mt-4 text-center">
@@ -351,7 +351,7 @@
               </div>
               
               <!-- Game Details Column -->
-              <div class="lg:w-3/4">
+              <div class="lg:flex-1 min-w-0 overflow-x-auto">
                 <div class="flex justify-between items-start">
                   <h3 class="text-3xl font-bold mb-2">${game.name}</h3>
                   <span class="text-gray-400 text-sm">${game.formatted_release_date || (game.release_year ? game.release_year : 'Release date unknown')}</span>
