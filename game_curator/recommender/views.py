@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 import json
+from datetime import datetime
 from .utils.gemini_api import get_game_recommendations
 from .utils.igdb_api import get_game_details
+from .models import Favorite
 
 def landing_page(request):
     """View for the landing page of the game recommender application."""
@@ -35,3 +37,65 @@ def recommender(request):
     
     # For GET requests, just render the form
     return render(request, 'recommender/recommender.html', context)
+
+def toggle_favorite(request):
+    """Toggle a game as favorite"""
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            game_id = data.get('game_id')
+            
+            # Check if this game is already favorited
+            existing_favorite = Favorite.objects.filter(game_id=game_id).first()
+            
+            if existing_favorite:
+                # Remove from favorites
+                existing_favorite.delete()
+                return JsonResponse({'success': True, 'added': False})
+            else:
+                # Add to favorites
+                name = data.get('name', '')
+                cover_url = data.get('cover_url')
+                summary = data.get('summary')
+                rating = data.get('rating')
+                first_release_date = data.get('first_release_date')
+                
+                # Convert timestamp to datetime if provided
+                release_date = None
+                if first_release_date:
+                    try:
+                        release_date = datetime.fromtimestamp(first_release_date)
+                    except:
+                        pass
+                
+                # Create new favorite
+                Favorite.objects.create(
+                    game_id=game_id,
+                    name=name,
+                    cover_url=cover_url,
+                    summary=summary,
+                    rating=rating,
+                    first_release_date=release_date
+                )
+                return JsonResponse({'success': True, 'added': True})
+                
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+    
+    return JsonResponse({'success': False, 'error': 'Invalid request'})
+
+def get_favorites(request):
+    """Get the status of whether a specific game is favorited"""
+    if request.method == 'GET':
+        game_id = request.GET.get('game_id')
+        
+        if game_id:
+            is_favorite = Favorite.objects.filter(game_id=game_id).exists()
+            return JsonResponse({'is_favorite': is_favorite})
+        
+    return JsonResponse({'is_favorite': False})
+
+def favorites_page(request):
+    """View for the favorites page"""
+    favorites = Favorite.objects.all().order_by('-created_at')
+    return render(request, 'recommender/favorites.html', {'favorites': favorites})

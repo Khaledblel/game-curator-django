@@ -593,9 +593,42 @@
       background: linear-gradient(135deg, #4f46e5, #9333ea);
       transform: rotate(90deg) scale(1.1);
     }
+
+    /* Navbar styles */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      z-index: 100;
+      background: transparent;
+      backdrop-filter: blur(5px);
+    }
+    
+    .navbar a {
+      color: #a855f7;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    
+    .navbar a:hover {
+      color: #d8b4fe;
+      transform: translateY(-2px);
+    }
   </style>
 </head>
 <body class="text-white px-4 py-12 flex flex-col items-center justify-center">
+  
+  <!-- Navigation Bar -->
+  <div class="navbar">
+    <a href="{% url 'landing_page' %}">Home</a>
+    <a href="{% url 'favorites' %}">My Favorites</a>
+  </div>
   
   <div class="glass p-8 max-w-6xl w-full">
     <h1 class="text-4xl font-bold text-center mb-6 tracking-wide">🎮 AI Game Recommender</h1>
@@ -638,12 +671,6 @@
       <!-- Similar Games Section -->
       <h3 class="text-xl font-semibold mb-4">Similar Games You Might Enjoy</h3>
       <div id="similarGamesContainer" class="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"></div>
-    </div>
-    
-    <div class="mt-10 text-center">
-      <a href="{% url 'landing_page' %}" class="text-purple-400 hover:text-purple-300">
-        ← Back to Home
-      </a>
     </div>
   </div>
 
@@ -742,6 +769,9 @@
             }
             
             resultsDiv.classList.remove('hidden');
+            
+            // Set up favorite checkboxes after rendering
+            setupFavoriteCheckboxes();
           } else {
             // Show error
             errorMessage.textContent = data.error || 'No games found. Try a different prompt.';
@@ -899,7 +929,7 @@
           `<img src="${game.cover.url}" alt="${game.name}" class="rounded-lg object-cover w-full h-auto">` : 
           `<img src="{% static 'recommender/assets/placeholder.png' %}" alt="${game.name}" class="rounded-lg object-cover w-full h-auto">`;
         
-        // Main HTML structure
+        // Main HTML structure (notice the addition of data attributes for favorites)
         mainGameCard.innerHTML = `
           <div class="game-card p-6 bg-gray-800 rounded-lg shadow-lg">
             <div class="flex flex-col lg:flex-row gap-8">
@@ -912,7 +942,12 @@
                   </div>
                   <div class="absolute top-2 left-2">
                     <div class="heart-container" title="Favorite">
-                      <input type="checkbox" class="checkbox" id="favorite-main-${game.id}">
+                      <input type="checkbox" class="checkbox favorite-checkbox" id="favorite-main-${game.id}" 
+                             data-game-id="${game.id}" data-name="${game.name}" 
+                             data-cover-url="${game.cover && game.cover.url ? game.cover.url : ''}" 
+                             data-summary="${game.summary || ''}" 
+                             data-rating="${game.total_rating || game.rating || ''}" 
+                             data-release-date="${game.first_release_date || ''}">
                       <div class="svg-container">
                         <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
                           <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
@@ -1191,7 +1226,12 @@
               </div>
               <div class="absolute top-2 left-2">
                 <div class="heart-container" title="Favorite">
-                  <input type="checkbox" class="checkbox" id="favorite-similar-${game.id}">
+                  <input type="checkbox" class="checkbox favorite-checkbox" id="favorite-similar-${game.id}" 
+                         data-game-id="${game.id}" data-name="${game.name}" 
+                         data-cover-url="${game.cover && game.cover.url ? game.cover.url : ''}" 
+                         data-summary="${game.summary || ''}" 
+                         data-rating="${game.total_rating || game.rating || ''}" 
+                         data-release-date="${game.first_release_date || ''}">
                   <div class="svg-container">
                     <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
                       <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
@@ -1225,6 +1265,54 @@
           `;
           
           similarGamesContainer.appendChild(gameCard);
+        });
+      }
+      
+      function setupFavoriteCheckboxes() {
+        // Add event listeners to favorite checkboxes
+        document.querySelectorAll('.favorite-checkbox').forEach(checkbox => {
+          const gameId = checkbox.dataset.gameId;
+          
+          // First check if this game is already favorited
+          fetch(`/api/get-favorites/?game_id=${gameId}`)
+            .then(response => response.json())
+            .then(data => {
+              checkbox.checked = data.is_favorite;
+            });
+          
+          // Add event listener for checkbox change
+          checkbox.addEventListener('change', function() {
+            const gameId = this.dataset.gameId;
+            const gameName = this.dataset.name;
+            const coverUrl = this.dataset.coverUrl;
+            const summary = this.dataset.summary;
+            const rating = this.dataset.rating;
+            const releaseDate = this.dataset.releaseDate;
+            
+            // Toggle favorite status
+            fetch('/api/toggle-favorite/', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+              },
+              body: JSON.stringify({
+                game_id: gameId,
+                name: gameName,
+                cover_url: coverUrl,
+                summary: summary,
+                rating: rating,
+                first_release_date: releaseDate
+              })
+            })
+            .then(response => response.json())
+            .then(data => {
+              console.log(data.added ? 'Added to favorites' : 'Removed from favorites');
+            })
+            .catch(error => {
+              console.error('Error toggling favorite:', error);
+            });
+          });
         });
       }
       

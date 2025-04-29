@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Favorite Games</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      min-height: 100vh;
+    }
+    
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 1rem;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .game-card {
+      transition: all 0.3s ease;
+    }
+    
+    .game-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Heart Container Styles */
+    .heart-container {
+      --heart-color: #a855f7;
+      position: relative;
+      width: 32px;
+      height: 32px;
+      transition: .3s;
+    }
+
+    .heart-container .checkbox {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      z-index: 20;
+      cursor: pointer;
+    }
+
+    .heart-container .svg-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .heart-container .svg-outline,
+    .heart-container .svg-filled {
+      fill: var(--heart-color);
+      position: absolute;
+    }
+
+    .heart-container .svg-filled {
+      animation: keyframes-svg-filled 1s;
+      display: none;
+    }
+
+    .heart-container .svg-celebrate {
+      position: absolute;
+      animation: keyframes-svg-celebrate .5s;
+      animation-fill-mode: forwards;
+      display: none;
+      stroke: var(--heart-color);
+      fill: var(--heart-color);
+      stroke-width: 2px;
+    }
+
+    .heart-container .checkbox:checked~.svg-container .svg-filled {
+      display: block
+    }
+
+    .heart-container .checkbox:checked~.svg-container .svg-celebrate {
+      display: block
+    }
+
+    @keyframes keyframes-svg-filled {
+      0% {
+        transform: scale(0);
+      }
+
+      25% {
+        transform: scale(1.2);
+      }
+
+      50% {
+        transform: scale(1);
+        filter: brightness(1.5);
+      }
+    }
+
+    @keyframes keyframes-svg-celebrate {
+      0% {
+        transform: scale(0);
+      }
+
+      50% {
+        opacity: 1;
+        filter: brightness(1.5);
+      }
+
+      100% {
+        transform: scale(1.4);
+        opacity: 0;
+        display: none;
+      }
+    }
+    
+    .rating-circle {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.3);
+      border: 2px solid;
+    }
+
+    /* Navbar styles */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      z-index: 100;
+      background: transparent;
+      backdrop-filter: blur(5px);
+    }
+    
+    .navbar a {
+      color: #a855f7;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    
+    .navbar a:hover {
+      color: #d8b4fe;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body class="text-white px-4 py-12 flex flex-col items-center justify-center">
+  {% csrf_token %}
+  
+  <!-- Navigation Bar -->
+  <div class="navbar">
+    <a href="{% url 'landing_page' %}">Home</a>
+    <a href="{% url 'recommender' %}">Recommender</a>
+  </div>
+  
+  <div class="glass p-8 max-w-6xl w-full">
+    <h1 class="text-4xl font-bold text-center mb-6 tracking-wide">🎮 My Favorite Games</h1>
+    <p class="text-center text-gray-300 mb-8">Games you've favorited by clicking on the heart icon.</p>
+
+    <!-- Favorites List -->
+    <div class="mt-10">
+      {% if favorites %}
+        <div class="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {% for favorite in favorites %}
+            <div class="game-card p-4 bg-gray-800 rounded-lg shadow-lg">
+              <div class="relative">
+                {% if favorite.cover_url %}
+                  <img src="{{ favorite.cover_url }}" alt="{{ favorite.name }}" class="rounded-lg object-cover w-full h-56">
+                {% else %}
+                  <div class="rounded-lg bg-gray-700 w-full h-56 flex items-center justify-center">
+                    <span class="text-gray-500">No Image Available</span>
+                  </div>
+                {% endif %}
+                <div class="absolute top-2 right-2 rating-circle border-purple-500">
+                  {% if favorite.rating %}
+                    <span>{{ favorite.rating|floatformat:1 }}</span>
+                  {% else %}
+                    <span>N/A</span>
+                  {% endif %}
+                </div>
+                <div class="absolute top-2 left-2">
+                  <div class="heart-container" title="Remove from Favorites">
+                    <input type="checkbox" class="checkbox favorite-checkbox" checked data-game-id="{{ favorite.game_id }}" data-name="{{ favorite.name }}">
+                    <div class="svg-container">
+                      <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+                        </path>
+                      </svg>
+                      <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+                        </path>
+                      </svg>
+                      <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="10,10 20,20"></polygon>
+                        <polygon points="10,50 20,50"></polygon>
+                        <polygon points="20,80 30,70"></polygon>
+                        <polygon points="90,10 80,20"></polygon>
+                        <polygon points="90,50 80,50"></polygon>
+                        <polygon points="80,80 70,70"></polygon>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h3 class="text-xl font-bold mt-3 mb-2">{{ favorite.name }}</h3>
+              <p class="text-gray-300 text-sm mb-3 line-clamp-3">{{ favorite.summary|default:"No description available." }}</p>
+              {% if favorite.first_release_date %}
+                <p class="text-gray-400 text-sm">Released: {{ favorite.first_release_date|date:"F d, Y" }}</p>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="flex flex-col items-center justify-center py-12">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+          <h3 class="text-xl font-semibold mb-2">No Favorites Yet</h3>
+          <p class="text-gray-300 mb-6">Start adding games to your favorites by clicking on the heart icon!</p>
+          <a href="{% url 'recommender' %}" class="bg-purple-600 hover:bg-purple-700 transition px-6 py-3 rounded text-white font-semibold">
+            Find Games to Favorite
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get CSRF token
+      const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+      
+      // Add event listeners to favorite checkboxes
+      document.querySelectorAll('.favorite-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function(e) {
+          const gameId = this.dataset.gameId;
+          const gameName = this.dataset.name;
+          const cardElement = this.closest('.game-card');
+          
+          // Toggle favorite status
+          fetch('/api/toggle-favorite/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({
+              game_id: gameId,
+              name: gameName
+            })
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              // If removed from favorites, remove the card from the page
+              if (!data.added) {
+                // Add a fade-out effect
+                cardElement.style.opacity = '0';
+                cardElement.style.transform = 'scale(0.8)';
+                cardElement.style.transition = 'opacity 0.5s, transform 0.5s';
+                
+                // Remove the element after animation
+                setTimeout(() => {
+                  cardElement.remove();
+                  
+                  // Check if there are any cards left
+                  const remainingCards = document.querySelectorAll('.game-card');
+                  if (remainingCards.length === 0) {
+                    // Reload the page to show the "No Favorites" message
+                    location.reload();
+                  }
+                }, 500);
+              }
+            }
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>
