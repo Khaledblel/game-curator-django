@@ -14,6 +14,95 @@
       background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
       min-height: 100vh;
     }
+    
+    /* Heart Container Styles */
+    .heart-container {
+      --heart-color: #a855f7;
+      position: relative;
+      width: 32px;
+      height: 32px;
+      transition: .3s;
+      z-index: 10;
+    }
+
+    .heart-container .checkbox {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      z-index: 20;
+      cursor: pointer;
+    }
+
+    .heart-container .svg-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .heart-container .svg-outline,
+    .heart-container .svg-filled {
+      fill: var(--heart-color);
+      position: absolute;
+    }
+
+    .heart-container .svg-filled {
+      animation: keyframes-svg-filled 1s;
+      display: none;
+    }
+
+    .heart-container .svg-celebrate {
+      position: absolute;
+      animation: keyframes-svg-celebrate .5s;
+      animation-fill-mode: forwards;
+      display: none;
+      stroke: var(--heart-color);
+      fill: var(--heart-color);
+      stroke-width: 2px;
+    }
+
+    .heart-container .checkbox:checked~.svg-container .svg-filled {
+      display: block
+    }
+
+    .heart-container .checkbox:checked~.svg-container .svg-celebrate {
+      display: block
+    }
+
+    @keyframes keyframes-svg-filled {
+      0% {
+        transform: scale(0);
+      }
+
+      25% {
+        transform: scale(1.2);
+      }
+
+      50% {
+        transform: scale(1);
+        filter: brightness(1.5);
+      }
+    }
+
+    @keyframes keyframes-svg-celebrate {
+      0% {
+        transform: scale(0);
+      }
+
+      50% {
+        opacity: 1;
+        filter: brightness(1.5);
+      }
+
+      100% {
+        transform: scale(1.4);
+        opacity: 0;
+        display: none;
+      }
+    }
+    
     .glass {
       background: rgba(255, 255, 255, 0.05);
       border-radius: 1rem;
@@ -71,6 +160,11 @@
       background: linear-gradient(135deg, #8b5cf6, #ec4899);
     }
     
+    .alt-name-badge {
+      background: linear-gradient(135deg, #475569, #1e293b);
+      font-style: italic;
+    }
+    
     .rating-circle {
         width: 3.5rem;
       height: 3.5rem;
@@ -119,6 +213,385 @@
       margin-bottom: 0.5rem;
       font-size: 0.875rem;
       transition: all 0.2s ease;
+    }
+    
+    /* DLC and Expansion styles */
+    .add-on-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 1rem;
+      padding: 0.5rem 0;
+      scrollbar-width: thin;
+      scrollbar-color: #a855f7 rgba(255, 255, 255, 0.1);
+    }
+    
+    .add-on-container::-webkit-scrollbar {
+      height: 6px;
+    }
+    
+    .add-on-container::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .add-on-container::-webkit-scrollbar-thumb {
+      background-color: #a855f7;
+      border-radius: 6px;
+    }
+    
+    .add-on-card {
+      min-width: 180px;
+      max-width: 180px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 0.5rem;
+      padding: 0.5rem;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+    }
+    
+    .add-on-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      border-color: rgba(168, 85, 247, 0.5);
+    }
+    
+    .add-on-cover {
+      width: 100%;
+      height: 240px;
+      border-radius: 0.25rem;
+      object-fit: cover;
+    }
+    
+    .add-on-type {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.65rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    
+    .dlc-type {
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+    }
+    
+    .expansion-type {
+      background: linear-gradient(135deg, #f59e0b, #ef4444);
+    }
+    
+    /* Storyline truncation styles */
+    .storyline-truncated, .summary-truncated {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .storyline-full, .summary-full {
+      display: block;
+    }
+    
+    .read-more-btn {
+      color: #a855f7;
+      cursor: pointer;
+      display: inline-block;
+      margin-top: 0.5rem;
+      font-weight: 500;
+    }
+    
+    .read-more-btn:hover {
+      text-decoration: underline;
+    }
+    
+    /* Franchise timeline styles */
+    .franchise-btn {
+      background: linear-gradient(135deg, #8b5cf6, #6366f1);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      gap: 8px;
+    }
+    
+    .franchise-btn:hover {
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      transform: translateY(-2px);
+    }
+    
+    .franchise-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+    
+    .franchise-timeline {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 8px;
+      padding: 24px;
+      margin-top: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .timeline {
+      position: relative;
+      margin: 0 auto;
+    }
+    
+    .timeline::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      background: linear-gradient(to bottom, #8b5cf6, #6366f1);
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 4px;
+      z-index: 1;
+    }
+    
+    .timeline-item {
+      padding: 10px 40px;
+      position: relative;
+      width: 50%;
+    }
+    
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: linear-gradient(135deg, #8b5cf6, #6366f1);
+      top: 15px;
+      border-radius: 50%;
+      z-index: 2;
+    }
+    
+    .timeline-left {
+      left: 0;
+    }
+    
+    .timeline-right {
+      left: 50%;
+    }
+    
+    .timeline-left::after {
+      right: -10px;
+    }
+    
+    .timeline-right::after {
+      left: -10px;
+    }
+    
+    .timeline-content {
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      display: flex;
+      gap: 16px;
+    }
+    
+    .timeline-left .timeline-content {
+      text-align: right;
+    }
+    
+    .timeline-right .timeline-content {
+      text-align: left;
+    }
+    
+    .timeline-left .timeline-content {
+      border-left: 4px solid #8b5cf6;
+    }
+    
+    .timeline-right .timeline-content {
+      border-right: 4px solid #8b5cf6;
+    }
+    
+    .franchise-cover {
+      width: 80px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+    
+    .timeline-left .timeline-content .franchise-cover {
+      order: 2;
+    }
+    
+    .timeline-year {
+      position: absolute;
+      top: -25px;
+      color: #a855f7;
+      font-weight: bold;
+    }
+    
+    .timeline-left .timeline-year {
+      right: 16px;
+    }
+    
+    .timeline-right .timeline-year {
+      left: 16px;
+    }
+    
+    .category-pill {
+      display: inline-block;
+      font-size: 0.6rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+    
+    .category-main-game {
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+    }
+    
+    .category-expansion {
+      background: linear-gradient(135deg, #f59e0b, #ef4444);
+    }
+    
+    .category-dlc {
+      background: linear-gradient(135deg, #10b981, #3b82f6);
+    }
+    
+    @media screen and (max-width: 768px) {
+      .timeline::after {
+        left: 31px;
+      }
+      
+      .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+      }
+      
+      .timeline-item::after {
+        left: 21px;
+      }
+      
+      .timeline-left::after,
+      .timeline-right::after {
+        left: 21px;
+      }
+      
+      .timeline-right {
+        left: 0%;
+      }
+      
+      .timeline-content {
+        text-align: left;
+      }
+      
+      .timeline-left .timeline-content {
+        text-align: left;
+        border-right: 4px solid #8b5cf6;
+        border-left: none;
+      }
+      
+      .timeline-left .timeline-content .franchise-cover {
+        order: 0;
+      }
+      
+      .timeline-year {
+        left: 70px;
+      }
+      
+      .timeline-left .timeline-year {
+        right: auto;
+        left: 70px;
+      }
+    }
+
+    /* Modal styles */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 50;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      width: 90%;
+      max-width: 1000px;
+      max-height: 90vh;
+      background: linear-gradient(135deg, #1e1c3c, #0c0a20);
+      border-radius: 12px;
+      position: relative;
+      padding: 24px;
+      overflow-y: auto;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      transform: translateY(20px);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      scrollbar-width: thin;
+      scrollbar-color: #a855f7 rgba(255, 255, 255, 0.1);
+    }
+
+    .modal-content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .modal-content::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 6px;
+    }
+
+    .modal-content::-webkit-scrollbar-thumb {
+      background-color: #a855f7;
+      border-radius: 6px;
+    }
+
+    .modal-backdrop.active .modal-content {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 9px;
+      right: 16px;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-close:hover {
+      background: linear-gradient(135deg, #4f46e5, #9333ea);
+      transform: rotate(90deg) scale(1.1);
     }
   </style>
 </head>
@@ -174,6 +647,25 @@
     </div>
   </div>
 
+  <!-- Franchise Timeline Modal -->
+  <div id="franchiseModal" class="modal-backdrop">
+    <div class="modal-content">
+      <button id="closeModal" class="modal-close" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      
+      <div class="franchise-timeline">
+        <h3 class="text-2xl font-semibold mb-6 flex items-center gap-2">
+          <span id="franchiseName">Franchise</span> Timeline
+        </h3>
+        <div id="timelineContainer" class="timeline"></div>
+      </div>
+    </div>
+  </div>
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const form = document.getElementById('gameForm');
@@ -183,7 +675,27 @@
       const loadingSpinner = document.getElementById('loadingSpinner');
       const errorMessage = document.getElementById('errorMessage');
       const submitButton = document.getElementById('submitButton');
+      const franchiseModal = document.getElementById('franchiseModal');
+      const franchiseName = document.getElementById('franchiseName');
+      const timelineContainer = document.getElementById('timelineContainer');
+      const closeModal = document.getElementById('closeModal');
       const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+      
+      // Modal close button
+      closeModal.addEventListener('click', () => {
+        franchiseModal.classList.remove('active');
+        // Enable page scrolling
+        document.body.style.overflow = 'auto';
+      });
+      
+      // Close modal when clicking outside the content
+      franchiseModal.addEventListener('click', (e) => {
+        if (e.target === franchiseModal) {
+          franchiseModal.classList.remove('active');
+          // Enable page scrolling
+          document.body.style.overflow = 'auto';
+        }
+      });
       
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -293,6 +805,15 @@
           })
           .join('');
         
+        // Franchise button (only show if franchise data is available)
+        const franchiseButton = game.franchise_details ? 
+          `<button id="franchiseButton" class="franchise-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M2 12h20M12 2v20" />
+            </svg>
+            Check Franchise
+          </button>` : '';
+        
         // Screenshot gallery (if available)
         const screenshotGallery = game.screenshots ? 
           `<div class="mt-6">
@@ -301,6 +822,51 @@
               ${game.screenshots.map(screenshot => 
                 `<img src="${screenshot.url}" alt="Screenshot" class="screenshot">`
               ).join('')}
+            </div>
+          </div>` : '';
+          
+        // DLC and Expansions section (if available)
+        const addOnSection = game.add_on_details && game.add_on_details.length > 0 ? 
+          `<div class="mt-6">
+            <h4 class="text-lg font-semibold mb-2">Downloadable Content & Expansions</h4>
+            <div class="add-on-container">
+              ${game.add_on_details.map(addOn => {
+                // Cover image with fallback
+                const addOnCover = addOn.cover && addOn.cover.url ? 
+                  `<img src="${addOn.cover.url}" alt="${addOn.name}" class="add-on-cover">` : 
+                  `<img src="{% static 'recommender/assets/placeholder.png' %}" alt="${addOn.name}" class="add-on-cover">`;
+                  
+                // Get first store link if available
+                const addOnStoreLink = addOn.stores && addOn.stores.length > 0 ? 
+                  `<a href="${addOn.stores[0]}" target="_blank" rel="noopener" class="mt-2 text-center bg-purple-700 hover:bg-purple-600 transition py-1 px-3 rounded text-white text-xs block">
+                    Get ${addOn.type}
+                  </a>` : '';
+                  
+                // Release year if available
+                const releaseInfo = addOn.release_year ? 
+                  `<span class="text-xs text-purple-300">${addOn.release_year}</span>` : '';
+                  
+                // Type badge (DLC or Expansion)
+                const typeBadge = addOn.type === 'Expansion' ?
+                  `<span class="add-on-type expansion-type">${addOn.type}</span>` :
+                  `<span class="add-on-type dlc-type">${addOn.type}</span>`;
+                  
+                return `
+                  <div class="add-on-card">
+                    <div class="relative">
+                      ${addOnCover}
+                      ${typeBadge}
+                    </div>
+                    <div class="mt-2">
+                      <div class="flex justify-between items-start">
+                        <h5 class="font-bold text-sm">${addOn.name}</h5>
+                        ${releaseInfo}
+                      </div>
+                      <p class="text-gray-300 text-xs mt-1 line-clamp-2">${addOn.summary || 'No description available.'}</p>
+                      ${addOnStoreLink}
+                    </div>
+                  </div>`;
+              }).join('')}
             </div>
           </div>` : '';
         
@@ -314,11 +880,14 @@
             ${publishers ? `<p class="text-gray-300"><span class="text-white font-semibold">Publishers:</span> ${publishers}</p>` : ''}
           </div>` : '';
         
-        // Storyline section (if available)
+        // Storyline section (if available) with truncation
         const storylineSection = game.storyline ? 
           `<div class="mt-4">
             <h4 class="text-lg font-semibold mb-2">Storyline</h4>
-            <p class="text-gray-300">${game.storyline}</p>
+            <div class="storyline-container">
+              <p class="text-gray-300 storyline-text storyline-truncated">${game.storyline}</p>
+              <span class="read-more-btn storyline-read-more">Read More</span>
+            </div>
           </div>` : '';
         
         // Official website link
@@ -328,9 +897,7 @@
         // Cover image with fallback
         const coverImage = game.cover && game.cover.url ? 
           `<img src="${game.cover.url}" alt="${game.name}" class="rounded-lg object-cover w-full h-auto">` : 
-          `<div class="bg-gray-800 rounded-lg w-full aspect-[3/4] flex items-center justify-center">
-            <span class="text-4xl">🎮</span>
-          </div>`;
+          `<img src="{% static 'recommender/assets/placeholder.png' %}" alt="${game.name}" class="rounded-lg object-cover w-full h-auto">`;
         
         // Main HTML structure
         mainGameCard.innerHTML = `
@@ -343,10 +910,135 @@
                   <div class="absolute top-2 right-2 rating-circle ${ratingColor} w-10 h-10">
                     <span class="text-sm font-bold">${rating}</span>
                   </div>
+                  <div class="absolute top-2 left-2">
+                    <div class="heart-container" title="Favorite">
+                      <input type="checkbox" class="checkbox" id="favorite-main-${game.id}">
+                      <div class="svg-container">
+                        <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+                          </path>
+                        </svg>
+                        <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+                          </path>
+                        </svg>
+                        <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+                          <polygon points="10,10 20,20"></polygon>
+                          <polygon points="10,50 20,50"></polygon>
+                          <polygon points="20,80 30,70"></polygon>
+                          <polygon points="90,10 80,20"></polygon>
+                          <polygon points="90,50 80,50"></polygon>
+                          <polygon points="80,80 70,70"></polygon>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="mt-4 text-center">
+                  ${franchiseButton}
                   ${storeButtons ? `<div class="mt-4">${storeButtons}</div>` : ''}
                   ${officialWebsite}
+                  
+                  <!-- Age Rating Covers -->
+                  ${(game.esrb_rating_cover_url || game.pegi_rating_cover_url) ? `
+                    <div class="mt-4 flex justify-center items-center gap-3">
+                      ${game.esrb_rating_cover_url ? `
+                        <div class="flex flex-col items-center">
+                          <img src="${game.esrb_rating_cover_url}" alt="ESRB Rating" class="h-12 w-auto">
+                          <span class="text-xs text-gray-400 mt-1">US</span>
+                        </div>` : ''}
+                      ${game.pegi_rating_cover_url ? `
+                        <div class="flex flex-col items-center">
+                          <img src="${game.pegi_rating_cover_url}" alt="PEGI Rating" class="h-12 w-auto">
+                          <span class="text-xs text-gray-400 mt-1">EU</span>
+                        </div>` : ''}
+                    </div>` : ''}
+                    
+                  <!-- Language Support Section -->
+                  ${game.language_support && Object.keys(game.language_support).length > 0 ? `
+                    <div class="mt-4 p-2 bg-gray-900 rounded-lg">
+                      <button id="toggleLanguageSupport" class="flex justify-between items-center w-full text-left">
+                        <h4 class="text-sm font-semibold">Supported Languages</h4>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transform transition-transform language-dropdown-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      <div id="languageSupportContent" class="mt-2 overflow-hidden transition-all duration-300 max-h-0">
+                        <table class="w-full text-xs">
+                          <thead>
+                            <tr>
+                              <th class="text-center pb-1 pr-2">Language</th>
+                              ${Object.keys(game.language_support).map(supportType => {
+                                // Use shorter header names
+                                let shortName = supportType;
+                                if (supportType === 'Interface') shortName = 'UI';
+                                if (supportType === 'Subtitles') shortName = 'Sub';
+                                return `<th class="text-center pb-1 px-1">${shortName}</th>`;
+                              }).join('')}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            ${(() => {
+                              // Get all unique languages across all support types
+                              const allLanguages = new Set();
+                              Object.values(game.language_support).forEach(languages => {
+                                languages.forEach(lang => allLanguages.add(lang.name));
+                              });
+                              
+                              // Create rows for each language
+                              return Array.from(allLanguages).map(langName => {
+                                const row = `<tr class="border-t border-gray-800">
+                                  <td class="py-1">${langName}</td>
+                                  ${Object.values(game.language_support).map(langList => {
+                                    const hasSupport = langList.some(lang => lang.name === langName);
+                                    return `<td class="text-center py-1">${hasSupport ? '✓' : ''}</td>`;
+                                  }).join('')}
+                                </tr>`;
+                                return row;
+                              }).join('');
+                            })()}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  ` : ''}
+                  
+                  <!-- Time To Beat Section -->
+                  ${game.time_to_beat ? `
+                    <div class="mt-4 p-2 bg-gray-900 rounded-lg">
+                      <h4 class="text-sm font-semibold mb-2 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Time To Beat
+                      </h4>
+                      <div class="flex justify-between mt-2 space-x-1">
+                        ${game.time_to_beat.hastily_formatted ? `
+                          <div class="flex-1 bg-purple-900 bg-opacity-40 rounded-lg p-2 text-center border border-purple-700">
+                            <div class="text-xs text-gray-300">Main Story</div>
+                            <div class="text-lg font-bold text-purple-300">${game.time_to_beat.hastily_formatted}</div>
+                          </div>
+                        ` : ''}
+                        ${game.time_to_beat.normally_formatted ? `
+                          <div class="flex-1 bg-blue-900 bg-opacity-40 rounded-lg p-2 text-center border border-blue-700">
+                            <div class="text-xs text-gray-300">Main + Extras</div>
+                            <div class="text-lg font-bold text-blue-300">${game.time_to_beat.normally_formatted}</div>
+                          </div>
+                        ` : ''}
+                        ${game.time_to_beat.completely_formatted ? `
+                          <div class="flex-1 bg-green-900 bg-opacity-40 rounded-lg p-2 text-center border border-green-700">
+                            <div class="text-xs text-gray-300">Completionist</div>
+                            <div class="text-lg font-bold text-green-300">${game.time_to_beat.completely_formatted}</div>
+                          </div>
+                        ` : ''}
+                      </div>
+                      ${game.time_to_beat.count ? `
+                        <div class="text-xs text-gray-400 text-center mt-1">
+                          Based on ${game.time_to_beat.count} player reports
+                        </div>
+                      ` : ''}
+                    </div>
+                  ` : ''}
                 </div>
               </div>
               
@@ -357,7 +1049,16 @@
                   <span class="text-gray-400 text-sm">${game.formatted_release_date || (game.release_year ? game.release_year : 'Release date unknown')}</span>
                 </div>
                 
-                <p class="text-gray-300 my-4">${game.summary || 'No description available.'}</p>
+                ${game.alt_names && game.alt_names.length > 0 ? 
+                  `<div class="mb-3">
+                    <span class="text-sm text-gray-300">Also known as: </span>
+                    <span class="badge alt-name-badge">${game.alt_names[0]}</span>
+                  </div>` : ''}
+                
+                <div class="summary-container">
+                  <p class="text-gray-300 my-4 summary-text summary-truncated">${game.summary || 'No description available.'}</p>
+                  <span class="read-more-btn summary-read-more">Read More</span>
+                </div>
                 
                 ${companyInfo}
                 
@@ -384,10 +1085,80 @@
                 
                 ${storylineSection}
                 ${screenshotGallery}
+                ${addOnSection}
               </div>
             </div>
           </div>
         `;
+        
+        // Add event listener for the "Read More" button
+        const readMoreBtn = mainGameCard.querySelector('.storyline-read-more');
+        if (readMoreBtn) {
+          readMoreBtn.addEventListener('click', function() {
+            const storylineText = mainGameCard.querySelector('.storyline-text');
+            if (storylineText.classList.contains('storyline-truncated')) {
+              storylineText.classList.remove('storyline-truncated');
+              storylineText.classList.add('storyline-full');
+              readMoreBtn.textContent = 'Show Less';
+            } else {
+              storylineText.classList.remove('storyline-full');
+              storylineText.classList.add('storyline-truncated');
+              readMoreBtn.textContent = 'Read More';
+            }
+          });
+        }
+        
+        // Add event listener for summary "Read More" button
+        const summaryReadMoreBtn = mainGameCard.querySelector('.summary-read-more');
+        if (summaryReadMoreBtn) {
+          summaryReadMoreBtn.addEventListener('click', function() {
+            const summaryText = mainGameCard.querySelector('.summary-text');
+            if (summaryText.classList.contains('summary-truncated')) {
+              summaryText.classList.remove('summary-truncated');
+              summaryText.classList.add('summary-full');
+              summaryReadMoreBtn.textContent = 'Show Less';
+            } else {
+              summaryText.classList.remove('summary-full');
+              summaryText.classList.add('summary-truncated');
+              summaryReadMoreBtn.textContent = 'Read More';
+            }
+          });
+        }
+        
+        // Add event listener for franchise button
+        const franchiseBtn = document.getElementById('franchiseButton');
+        if (franchiseBtn && game.franchise_details) {
+          franchiseBtn.addEventListener('click', function() {
+            renderFranchiseTimeline(game.franchise_details);
+            
+            // Show the modal
+            franchiseModal.classList.add('active');
+            // Disable page scrolling when modal is open
+            document.body.style.overflow = 'hidden';
+          });
+        }
+
+        // Add event listener for language support toggle
+        const toggleLanguageSupport = document.getElementById('toggleLanguageSupport');
+        const languageSupportContent = document.getElementById('languageSupportContent');
+        const languageDropdownIcon = document.querySelector('.language-dropdown-icon');
+        if (toggleLanguageSupport && languageSupportContent) {
+          toggleLanguageSupport.addEventListener('click', function() {
+            const isExpanded = languageSupportContent.classList.contains('expanded');
+            
+            if (!isExpanded) {
+              // Open the section
+              languageSupportContent.classList.add('expanded');
+              languageSupportContent.style.maxHeight = languageSupportContent.scrollHeight + 'px';
+              languageDropdownIcon.style.transform = 'rotate(180deg)';
+            } else {
+              // Close the section
+              languageSupportContent.classList.remove('expanded');
+              languageSupportContent.style.maxHeight = '0';
+              languageDropdownIcon.style.transform = 'rotate(0)';
+            }
+          });
+        }
       }
       
       function renderSimilarGames(similarGames) {
@@ -407,9 +1178,7 @@
           // Cover image with fallback
           const coverImage = game.cover && game.cover.url ? 
             `<img src="${game.cover.url}" alt="${game.name}" class="rounded-lg object-cover w-full h-56">` : 
-            `<div class="bg-gray-800 rounded-lg w-full h-56 flex items-center justify-center">
-              <span class="text-4xl">🎮</span>
-            </div>`;
+            `<img src="{% static 'recommender/assets/placeholder.png' %}" alt="${game.name}" class="rounded-lg object-cover w-full h-56">`;
           
           // Create the card
           const gameCard = document.createElement('div');
@@ -419,6 +1188,29 @@
               ${coverImage}
               <div class="absolute top-2 right-2 rating-circle border-purple-500 w-10 h-10 text-sm">
                 ${rating}
+              </div>
+              <div class="absolute top-2 left-2">
+                <div class="heart-container" title="Favorite">
+                  <input type="checkbox" class="checkbox" id="favorite-similar-${game.id}">
+                  <div class="svg-container">
+                    <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+                      </path>
+                    </svg>
+                    <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+                      </path>
+                    </svg>
+                    <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+                      <polygon points="10,10 20,20"></polygon>
+                      <polygon points="10,50 20,50"></polygon>
+                      <polygon points="20,80 30,70"></polygon>
+                      <polygon points="90,10 80,20"></polygon>
+                      <polygon points="90,50 80,50"></polygon>
+                      <polygon points="80,80 70,70"></polygon>
+                    </svg>
+                  </div>
+                </div>
               </div>
             </div>
             <h3 class="text-xl font-bold mt-3 mb-2">${game.name}</h3>
@@ -434,6 +1226,65 @@
           
           similarGamesContainer.appendChild(gameCard);
         });
+      }
+      
+      function renderFranchiseTimeline(franchiseDetails) {
+        // Update franchise name
+        franchiseName.textContent = franchiseDetails.name;
+        
+        // Clear existing timeline content
+        timelineContainer.innerHTML = '';
+        
+        // Get games sorted by release date
+        const franchiseGames = franchiseDetails.games_details.filter(game => game.first_release_date);
+        
+        // Create timeline HTML
+        franchiseGames.forEach((game, index) => {
+          // Alternate left/right positioning
+          const position = index % 2 === 0 ? 'timeline-left' : 'timeline-right';
+          
+          // Get release year
+          const releaseYear = game.release_year || 'Unknown';
+          
+          // Game rating
+          const rating = game.total_rating ? 
+            game.total_rating.toFixed(1) : 
+            (game.rating ? game.rating.toFixed(1) : '-');
+          
+          // Game cover image
+          const coverImage = game.cover && game.cover.url ? 
+            `<img src="${game.cover.url}" alt="${game.name}" class="franchise-cover">` : 
+            `<img src="{% static 'recommender/assets/placeholder.png' %}" alt="${game.name}" class="franchise-cover">`;
+          
+          // Game type badge (Main Game, DLC, etc.)
+          let categoryClass = 'category-main-game';
+          if (game.type.includes('DLC') || game.type.includes('Add-on')) {
+            categoryClass = 'category-dlc';
+          } else if (game.type.includes('Expansion')) {
+            categoryClass = 'category-expansion';
+          }
+          
+          // Create timeline item
+          const timelineItem = document.createElement('div');
+          timelineItem.className = `timeline-item ${position}`;
+          timelineItem.innerHTML = `
+            <div class="timeline-content">
+              <div class="timeline-year">${releaseYear}</div>
+              ${coverImage}
+              <div class="flex flex-col ${position === 'timeline-left' ? 'items-end' : 'items-start'}">
+                <span class="category-pill ${categoryClass}">${game.type}</span>
+                <h4 class="text-lg font-bold">${game.name}</h4>
+                ${rating !== '-' ? `<div class="text-purple-300 mt-1">Rating: ${rating}</div>` : ''}
+              </div>
+            </div>
+          `;
+          
+          // Add to timeline container
+          timelineContainer.appendChild(timelineItem);
+        });
+        
+        // Show the timeline section
+        franchiseModal.classList.add('active');
       }
     });
   </script>
