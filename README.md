@@ -1,146 +1,127 @@
-# 🎮 Game Curator - AI-Powered Game Recommendation Platform
+# 🎮 Game Curator
 
-![Game Curator Banner](recommender/static/recommender/assets/logo.png)
+![Django](https://img.shields.io/badge/Django-5.2-green.svg)
+![MySQL](https://img.shields.io/badge/MySQL-Azure-blue.svg)
+![Python](https://img.shields.io/badge/Python-3.x-blue.svg)
+![Status](https://img.shields.io/badge/Status-Active-success.svg)
 
-Game Curator is a sophisticated web application built with Django that leverages AI to provide personalized video game recommendations. Users can describe their gaming preferences in natural language, and the system will suggest relevant games they might enjoy.
+> A personalized game recommendation web application built with Django, powered by AI
+
+## 📖 Overview
+
+Game Curator is an intelligent web application that recommends video games based on user preferences. Leveraging Google's Gemini AI for natural language understanding and IGDB's extensive game database, it offers personalized game suggestions tailored to each user's unique tastes and requirements.
+
 
 ## ✨ Features
 
-- **AI-Powered Recommendations**: Natural language processing to understand user preferences
-- **Detailed Game Information**: Comprehensive details including ratings, genres, platforms, screenshots, and more
-- **Favorites System**: Save games to your personal favorites list
-- **Franchise Timeline View**: Explore game franchises with an interactive timeline
-- **DLC & Expansion Tracking**: View downloadable content and expansions for recommended games
-- **Responsive Design**: Fully optimized for both desktop and mobile devices
-
+- **🤖 AI-Powered Recommendations**: Natural language input processing using Google Gemini API
+- **🎯 Personalized Suggestions**: Get games tailored to your specific preferences
+- **💾 Favorites System**: Save and manage your favorite game recommendations
+- **🔒 User Authentication**: Secure login and registration system
+- **📱 Responsive Design**: Enjoy a seamless experience across devices
 
 ## 🛠️ Technologies Used
 
-- **Backend**: Django 5.2, Python 3.x
-- **Frontend**: HTML5, CSS3, JavaScript, Tailwind CSS 
-- **Database**: MySQL (Azure Database for MySQL)
-- **Authentication**: Django Authentication System
-- **API Integration**: IGDB (Internet Game Database) API
-- **Deployment**: Azure Web App Service
+- **Backend**: Django 5.2, Python
+- **Database**: MySQL (Azure)
+- **APIs**: 
+  - IGDB API for game data 
+  - Google Gemini API for AI recommendations
+- **Frontend**: HTML, CSS, JavaScript
+- **Authentication**: Django built-in auth system
+
+## 🎮 IGDB API Endpoints
+
+The application currently uses the following IGDB API endpoints:
+
+- **/games**: Fetches basic game information and metadata
+- **/covers**: Retrieves game cover images
+- **/genres**: Gets genre information for categorization
+- **/platforms**: Obtains platform availability data
+- **/companies**: Retrieves publisher and developer information
+
+API documentation: [IGDB API Docs](https://api-docs.igdb.com/)
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- Python 3.8+
-- pip (Python Package Installer)
+- Python 3.x
+- pip
 - MySQL database
 - IGDB API credentials
+- Google Gemini API key
 
 ### Installation
 
 1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/game-curator-django.git
+   cd game-curator-django
+   ```
 
-```bash
-git clone https://github.com/yourusername/game-curator-django.git
-cd game-curator-django
-```
+2. **Create and activate a virtual environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
 
-2. **Set up a virtual environment**
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. **Install required dependencies**
-
-```bash
-pip install -r requirements.txt
-```
-
-4. **Create a .env file in the project root with the following variables**
-
-```
-SECRET_KEY=your_django_secret_key
-AZURE_MYSQL_NAME=your_mysql_db_name
-AZURE_MYSQL_USER=your_mysql_username
-AZURE_MYSQL_PASSWORD=your_mysql_password
-AZURE_MYSQL_HOST=your_mysql_host
-AZURE_MYSQL_PORT=3306
-IGDB_CLIENT_ID=your_igdb_client_id
-IGDB_CLIENT_SECRET=your_igdb_client_secret
-```
+4. **Environment Setup**
+   
+   Create a `.env` file in the project root with the following variables:
+   ```
+   # Database Configuration
+   AZURE_MYSQL_NAME=your_db_name
+   AZURE_MYSQL_USER=your_db_username
+   AZURE_MYSQL_PASSWORD=your_db_password
+   AZURE_MYSQL_HOST=your_db_host
+   AZURE_MYSQL_PORT=3306
+   
+   # API Keys
+   IGDB_CLIENT_ID=your_igdb_client_id
+   IGDB_CLIENT_SECRET=your_igdb_client_secret
+   GEMINI_API_KEY=your_gemini_api_key
+   ```
 
 5. **Run migrations**
+   ```bash
+   python manage.py migrate
+   ```
 
-```bash
-python manage.py migrate
+6. **Create a superuser**
+   ```bash
+   python manage.py createsuperuser
+   ```
+
+7. **Run the development server**
+   ```bash
+   python manage.py runserver
+   ```
+
+8. **Access the application**
+   
+   Open your browser and navigate to `http://127.0.0.1:8000`
+
+## 🧰 Project Structure
+
 ```
-
-6. **Start development server**
-
-```bash
-python manage.py runserver
+game_curator/
+├── authentication/        # User authentication app
+├── recommender/           # Main recommendation app
+│   ├── models.py          # Database models
+│   ├── views.py           # View functions
+│   ├── utils/             # Utility functions
+│   │   ├── gemini_api.py  # Google Gemini API integration
+│   │   └── igdb_api.py    # IGDB API integration
+│   └── templates/         # HTML templates
+├── game_curator/          # Project settings
+└── static/                # Static files (CSS, JS, images)
 ```
-
-7. **Access the application at http://127.0.0.1:8000/**
-
-## 📊 Project Structure
-
-```
-game-curator-django/
-├── game_curator/             # Main Django project
-│   ├── settings.py           # Project settings 
-│   ├── urls.py               # Project URL configuration
-│   └── wsgi.py               # WSGI configuration 
-├── recommender/              # Game recommendation app
-│   ├── models.py             # Data models
-│   ├── views.py              # View functions
-│   ├── templates/            # HTML templates
-│   └── static/               # Static assets
-├── authentication/           # User authentication app
-│   └── ...                   # Auth-related files
-├── manage.py                 # Django management script
-├── requirements.txt          # Python dependencies
-├── .env                      # Environment variables (not in version control)
-└── README.md                 # Project documentation
-```
-
-## 🌟 Key Features Explained
-
-### AI Game Recommendation Engine
-
-The core feature of Game Curator is its intelligent recommendation system. Users can describe what they're looking for in natural language (e.g., "An open-world RPG with dragons and deep lore"), and the system will:
-
-1. Process the request using NLP techniques
-2. Query the IGDB database with relevant parameters
-3. Rank and filter results based on relevance
-4. Return a main recommendation and similar alternatives
-
-### Detailed Game Information
-
-For each recommended game, we display comprehensive information:
-
-- Basic details (title, release date, developer, publisher)
-- Media (cover art, screenshots)
-- Genres, themes, and game modes
-- Platform availability
-- Age ratings (ESRB, PEGI)
-- Storyline and summary
-- DLC and expansion information
-- Time to beat estimates
-- Language support details
-
-### Franchise Timeline
-
-For games that are part of a larger franchise, users can explore an interactive timeline showing:
-
-- All games in chronological order
-- Release years
-- Game types (main entries, expansions, DLC)
-- Ratings and cover art
-
-### User Authentication and Favorites
-
-- Users can create accounts to save their preferences
-- "Favorite" games are stored in the user's profile
-- Browse and manage favorite games from a dedicated page
 
 ## 🤝 Contributing
 
@@ -156,12 +137,12 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 📬 Contact
+## 🙏 Acknowledgements
 
-Project Link: [https://github.com/yourusername/game-curator-django](https://github.com/yourusername/game-curator-django)
+- [Django](https://www.djangoproject.com/) - The web framework used
+- [IGDB API](https://www.igdb.com/api) - For providing the game data
+- [Google Gemini](https://ai.google/discover/gemini/) - For AI-powered recommendations
 
 ---
 
-<div align="center">
-  <p>Built with ❤️ by <a href="https://github.com/yourusername">Your Name</a></p>
-</div>
+Made with ❤️ by Khaled
