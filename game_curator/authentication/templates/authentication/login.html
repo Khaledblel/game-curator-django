@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Game Curator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    }
+    
+    /* Logo styles */
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    
+    .logo-container img {
+      height: 40px;
+      width: auto;
+      margin-right: 10px;
+    }
+    
+    .site-name {
+      font-weight: 700;
+      font-size: 1.25rem;
+      background: linear-gradient(135deg, #a855f7, #6366f1);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body class="text-white min-h-screen flex items-center justify-center">
+  <div class="w-full max-w-md p-8 bg-gray-800 bg-opacity-80 rounded-lg shadow-xl">
+    <!-- Logo and site name -->
+    <div class="logo-container">
+      <img src="{% static 'recommender/assets/logo.png' %}" alt="Game Curator Logo">
+      <span class="site-name">Game Curator</span>
+    </div>
+  
+    <h1 class="text-3xl font-bold text-center mb-6">🎮 Login</h1>
+    
+    {% if messages %}
+      {% for message in messages %}
+        <div class="mb-4 p-3 {% if message.tags == 'error' %}bg-red-600{% else %}bg-green-600{% endif %} bg-opacity-70 rounded">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+    
+    <form method="post" class="space-y-6">
+      {% csrf_token %}
+      
+      <div>
+        <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium">Username</label>
+        <div class="mt-1">
+          {{ form.username }}
+        </div>
+        {% if form.username.errors %}
+          <p class="text-red-400 text-sm mt-1">{{ form.username.errors.0 }}</p>
+        {% endif %}
+      </div>
+      
+      <div>
+        <label for="{{ form.password.id_for_label }}" class="block text-sm font-medium">Password</label>
+        <div class="mt-1">
+          {{ form.password }}
+        </div>
+        {% if form.password.errors %}
+          <p class="text-red-400 text-sm mt-1">{{ form.password.errors.0 }}</p>
+        {% endif %}
+      </div>
+      
+      <div>
+        <button type="submit" class="w-full py-3 px-4 bg-purple-600 hover:bg-purple-700 rounded-lg font-medium">
+          Login
+        </button>
+      </div>
+    </form>
+    
+    <div class="mt-6 text-center">
+      <p>Don't have an account? <a href="{% url 'register' %}" class="text-purple-400 hover:text-purple-300">Register now</a></p>
+      <p class="mt-4">
+        <a href="{% url 'landing_page' %}" class="text-gray-400 hover:text-white">← Back to Home</a>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Add styles to the form inputs
+    document.querySelectorAll('input').forEach(input => {
+      input.classList.add('w-full', 'py-2', 'px-3', 'border', 'border-gray-700', 'bg-gray-900', 'rounded-md', 'text-white');
+    });
+  </script>
+</body>
+</html>

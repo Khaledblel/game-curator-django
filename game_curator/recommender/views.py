@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 import json
 from datetime import datetime
+from django.contrib.auth.decorators import login_required
 from .utils.gemini_api import get_game_recommendations
 from .utils.igdb_api import get_game_details
 from .models import Favorite
@@ -10,6 +11,7 @@ def landing_page(request):
     """View for the landing page of the game recommender application."""
     return render(request, 'recommender/landing.html')
 
+@login_required
 def recommender(request):
     """View for the game recommendation form and results."""
     context = {}
@@ -38,6 +40,7 @@ def recommender(request):
     # For GET requests, just render the form
     return render(request, 'recommender/recommender.html', context)
 
+@login_required
 def toggle_favorite(request):
     """Toggle a game as favorite"""
     if request.method == 'POST':
@@ -46,7 +49,7 @@ def toggle_favorite(request):
             game_id = data.get('game_id')
             
             # Check if this game is already favorited
-            existing_favorite = Favorite.objects.filter(game_id=game_id).first()
+            existing_favorite = Favorite.objects.filter(user=request.user, game_id=game_id).first()
             
             if existing_favorite:
                 # Remove from favorites
@@ -70,6 +73,7 @@ def toggle_favorite(request):
                 
                 # Create new favorite
                 Favorite.objects.create(
+                    user=request.user,
                     game_id=game_id,
                     name=name,
                     cover_url=cover_url,
@@ -84,18 +88,20 @@ def toggle_favorite(request):
     
     return JsonResponse({'success': False, 'error': 'Invalid request'})
 
+@login_required
 def get_favorites(request):
     """Get the status of whether a specific game is favorited"""
     if request.method == 'GET':
         game_id = request.GET.get('game_id')
         
         if game_id:
-            is_favorite = Favorite.objects.filter(game_id=game_id).exists()
+            is_favorite = Favorite.objects.filter(user=request.user, game_id=game_id).exists()
             return JsonResponse({'is_favorite': is_favorite})
         
     return JsonResponse({'is_favorite': False})
 
+@login_required
 def favorites_page(request):
     """View for the favorites page"""
-    favorites = Favorite.objects.all().order_by('-created_at')
+    favorites = Favorite.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'recommender/favorites.html', {'favorites': favorites})
